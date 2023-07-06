@@ -14,11 +14,14 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-
+import { useContext } from "react";
+import { SearchContext } from "../../context/SearchContext";
+import {AuthContext} from "../../context/AuthContext"
 const Header = ({ type }) => {
+  const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
+  const [dates, setDates] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
@@ -33,6 +36,7 @@ const Header = ({ type }) => {
   });
 
   const navigate = useNavigate();
+  const {user } = useContext(AuthContext)
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -42,9 +46,11 @@ const Header = ({ type }) => {
       };
     });
   };
-
+  const {dispatch} = useContext(SearchContext)
   const handleSearch = () => {
-    navigate("/hotels", { state: { destination, date, options } });
+    dispatch({type:"NEW_SEARCH", payload:{source, destination, dates, options}})
+
+    navigate("/hotels", { state: { source,destination, dates, options } });
   };
 
   return (
@@ -70,13 +76,22 @@ const Header = ({ type }) => {
             <p className="headerDesc">
             Tours all around Morocco and you get to choose the car!
             </p>
-            <button className="headerBtn">Sign in / Register</button>
+            {!user && <button className="headerBtn">Sign in / Register</button>}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faCar} className="headerIcon" />
                 <input
                   type="text"
-                  placeholder="Where are you going?"
+                  placeholder="Source"
+                  className="headerSearchInput"
+                  onChange={(e) => setSource(e.target.value)}
+                />
+              </div>
+              <div className="headerSearchItem">
+                <FontAwesomeIcon icon={faCar} className="headerIcon" />
+                <input
+                  type="text"
+                  placeholder="Destination"
                   className="headerSearchInput"
                   onChange={(e) => setDestination(e.target.value)}
                 />
@@ -86,16 +101,16 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
-                >{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
-                  date[0].endDate,
+                >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
+                  dates[0].endDate,
                   "MM/dd/yyyy"
                 )}`}</span>
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setDate([item.selection])}
+                    onChange={(item) => setDates([item.selection])}
                     moveRangeOnFirstSelection={false}
-                    ranges={date}
+                    ranges={dates}
                     className="date"
                     minDate={new Date()}
                   />

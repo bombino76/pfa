@@ -6,15 +6,28 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
+import useFetch from "../../hooks/useFetch.js"
 
 
 const List = () => {
   const location = useLocation();
   const [destination, setDestination] = useState(location.state.destination);
-  const [date, setDate] = useState(location.state.date);
+  const [source, setSource] = useState(location.state.source);
+  const [dates, setDates] = useState(location.state.dates);
   const [openDate, setOpenDate] = useState(false);
   const [options, setOptions] = useState(location.state.options);
 
+  const {data,loading,error,reFetch} = useFetch(`/targets?source=${source}&destination=${destination}`)
+
+  const handleClick = ()=>{
+    reFetch();
+  }
+  const handleChangeOne = (event) => {
+    setSource(event.target.value)
+  }
+  const handleChangeTwo = (event) => {
+    setDestination(event.target.value)
+  }
   return (
     <div>
       <Navbar />
@@ -24,38 +37,32 @@ const List = () => {
           <div className="listSearch">
             <h1 className="lsTitle">Search</h1>
             <div className="lsItem">
+              <label>Source</label>
+              <input onChange={handleChangeOne} placeholder={source} type="text" />
+            </div>
+            <div className="lsItem">
               <label>Destination</label>
-              <input placeholder={destination} type="text" />
+              <input onChange={handleChangeTwo} placeholder={destination} type="text" />
             </div>
             <div className="lsItem">
               <label>Check-in Date</label>
               <span onClick={() => setOpenDate(!openDate)}>{`${format(
-                date[0].startDate,
+                dates[0].startDate,
                 "MM/dd/yyyy"
-              )} to ${format(date[0].endDate, "MM/dd/yyyy")}`}</span>
+              )} to ${format(dates[0].endDate, "MM/dd/yyyy")}`}</span>
               {openDate && (
                 <DateRange
-                  onChange={(item) => setDate([item.selection])}
+                  onChange={(item) => setDates([item.selection])}
                   minDate={new Date()}
-                  ranges={date}
+                  ranges={dates}
                 />
               )}
             </div>
             <div className="lsItem">
               <label>Options</label>
               <div className="lsOptions">
-                <div className="lsOptionItem">
-                  <span className="lsOptionText">
-                    Min price 
-                  </span>
-                  <input type="number" className="lsOptionInput" />
-                </div>
-                <div className="lsOptionItem">
-                  <span className="lsOptionText">
-                    Max price 
-                  </span>
-                  <input type="number" className="lsOptionInput" />
-                </div>
+
+
                 <div className="lsOptionItem">
                   <span className="lsOptionText">Adult</span>
                   <input
@@ -77,35 +84,20 @@ const List = () => {
 
               </div>
             </div>
-            <button>Search</button>
+            <button onClick={handleClick} >Search</button>
           </div>
           <div className="listResult">
-            <SearchItem 
-           
-              name ={"Moroccan pure sahara tour"}
-              url={"https://media-cdn.tripadvisor.com/media/photo-s/1a/55/e2/37/caption.jpg"}
-              source={"Casablanca"}
-              destination={"Merzouga"}
-              distance={"450km"}  />
-            <SearchItem 
-           
-              name={"Sahara desert "}
-              url={"https://desert-maroc.com/wordpress2012/wp-content/uploads/desert-merzouga-camp-e1613144211750.jpg"}
-              source={"Rabat"}
-              destination={"Merzouga"}
-              distance={"430km"}
-
-               /> 
-            <SearchItem 
-              
-              name={"Magestic desert tour"}
-              url={"https://happytrip.ma/wp-content/uploads/2021/03/Sahara-desert-merzouga-ouarzazate-toudgha-dades-happy-trip-scaled.jpg"}
-              source={"Tanger"}
-              destination={"Merzouga"}
-               distance={"500km"}
+            {loading ? "loading" : <>
+            {data.map(item=>(
+              <SearchItem item={item} key={item._id}/>
+            ))}
             
-                          
-            />
+            </>}
+            
+           
+
+
+
 
           </div>
         </div>

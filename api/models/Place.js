@@ -14,15 +14,15 @@ const CarSchema = new mongoose.Schema({
         type: Number,
         required:true
     },
-    target:[{
+/*     target:[{
         type: mongoose.Types.ObjectId,
         ref: "target"
-      }],
+      }], */
     imagePaths:[{
         type: String,
         required:true
     }]
 
-});
+},{ timestamps: true });
 
 export default mongoose.model("Place",CarSchema)

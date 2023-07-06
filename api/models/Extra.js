@@ -20,6 +20,6 @@ const ExtraSchema = new mongoose.Schema({
         ref: "ExtrasType",
       },
 
-});
+},{ timestamps: true });
 
 export default mongoose.model("Extra",ExtraSchema)

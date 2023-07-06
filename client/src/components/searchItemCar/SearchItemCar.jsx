@@ -1,27 +1,27 @@
 import { Link } from "react-router-dom";
-import "./searchItem.css";
+import "./searchItemCar.css";
 
 const SearchItem = ({item}) => {
   
   return (
     <div className="searchItem">
       <img
-        src= {item.img}
+        src= {item.imagePaths}
         alt=""
         className="siImg"
       />
       <div className="siDesc">
-        <h1 className="siTitle"></h1>
-        <span className="siDistance">{item.distance}</span>
-        <span className="siTaxiOp">Extras Available</span>
+        <h1 className="siTitle">{item.name}</h1>
+       
+        <span className="siTaxiOp"> {item.Modele}</span>
         <span className="siSubtitle">
-          {item.source}
+        
         </span>
         <span className="siSubtitle">
-          To
+          Number of Seats : {item.nbrPlaces}
         </span>
         <span className="siSubtitle">
-        {item.destination}
+      
         </span>
 
         <span className="siCancelOp">Free cancellation </span>
@@ -31,15 +31,15 @@ const SearchItem = ({item}) => {
       </div>
       <div className="siDetails">
         <div className="siRating">
-          <span>Excellent</span>
-          <button>{item.distance} km</button>
+          <span> </span>
+          <button>{item.rating}</button>
         </div>
         <div className="siDetailTexts">
           <span className="siPrice">{item.price} MAD</span>
           <span className="siTaxOp">Includes taxes and fees</span>
          
           <Link to={`/hotels/${item._id}`}>
-          <button className="siCheckButton">Book Now</button>
+          <button className="siCheckButton">Book This Car</button>
           </Link>
         </div>
       </div>

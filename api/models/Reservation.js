@@ -20,21 +20,27 @@ const ReservationSchema = new mongoose.Schema({
         enum: ['waiting', 'validated','paid','confirmed','rejected'],
         required:true
     },
-    creationDate:{
-        type:Date,
-        required:true
-    },
+
     target:{
-        type: mongoose.Types.ObjectId,
-        ref: "Target",
+        type: String
       },
-    extra:[{
-        type: mongoose.Types.ObjectId,
-        ref: "Extra",
-      }],
+    extra:{
+         wifi :{
+          type:  Boolean
+        },
+         babySeats :{
+            type:  Boolean
+          },
+
+        extraBaggage :{
+            type:  Boolean
+          },
+
+
+
+      },
       user:{
-        type: mongoose.Types.ObjectId,
-        ref: "user",
+        type: String,
       },
 
 });

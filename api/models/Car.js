@@ -17,8 +17,20 @@ const CarSchema = new mongoose.Schema({
     imagePaths:{
         type: String,
         required:true
+    },
+    price:{
+        type : Number
+    },
+    rating:{
+        type: Number
+    },
+    Modele:{
+        type: Number
+    },
+    luxe:{
+        type: Boolean
     }
 
-});
+},{ timestamps: true });
 
 export default mongoose.model("Car",CarSchema)

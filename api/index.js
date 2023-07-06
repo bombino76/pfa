@@ -13,7 +13,10 @@ import cors from "cors"
 
 const app = express()
 dotenv.config()
-
+const corsOptions = {
+  origin:true,
+  credentials:true
+}
 
 //function that connects to the mongoDB 
 const connect = async () =>{
@@ -35,12 +38,10 @@ app.get("/", (req,res)=>{
 })
 
 //middlewares
-app.use(cors({
-  credentials:true,
-  origin: 'http://localhost:5173/'
-}));
+
 app.use(cookieParser())
 app.use(express.json())
+app.use(cors(corsOptions))
 app.use("/auth",authRoute)
 app.use("/cars",carsRoute)
 app.use("/places",placesRoute)

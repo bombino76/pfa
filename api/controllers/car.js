@@ -48,10 +48,11 @@ export const deleteCar = async (req,res,next)=>{
 
 export const getCars = async (req,res,next)=>{
     try{
-        const cars = await Car.find();
+        const cars = await Car.find(req.query);
         res.status(200).json(cars)
 
     }catch(err){
         next(err);
     }
 }
+

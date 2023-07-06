@@ -1,9 +1,12 @@
 import "./featured.css";
-
+import useFetch from "../../hooks/useFetch.js"
 const Featured = () => {
+
+  const {data,loading,error} = useFetch("/targets/countByCity?cities=Tetouan,Merzouga,Marrakech")
+  console.log(data)
   return (
     <div className="featured">
-      <div className="featuredItem">
+      {loading? "Loading please wait": <><div className="featuredItem">
         <img
           src="https://www.infostourismemaroc.com/uploads/images/gallery/5ec53daa390b8_visiter-place-moulay-el-mehdi-monument-ville-tetouan-city-infos-tourisme-maroc.jpg"
           alt=""
@@ -11,7 +14,7 @@ const Featured = () => {
         />
         <div className="featuredTitles">
           <h1>Tetouan</h1>
-          <h2>3 tours</h2>
+          <h2>{data[0]} tours</h2>
         </div>
       </div>
       
@@ -23,7 +26,7 @@ const Featured = () => {
         />
         <div className="featuredTitles">
           <h1>Merzouga</h1>
-          <h2>5 tours</h2>
+          <h2>{data[1]} tours</h2>
         </div>
       </div>
       <div className="featuredItem">
@@ -34,9 +37,9 @@ const Featured = () => {
         />
         <div className="featuredTitles">
           <h1>Marrakech</h1>
-          <h2>6 tours</h2>
+          <h2>{data[2]} tours</h2>
         </div>
-      </div>
+      </div></>}
     </div>
   );
 };

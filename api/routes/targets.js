@@ -1,5 +1,5 @@
 import express from "express";
-import { createTarget, deleteTarget, getTarget, getTargets, updateTarget, countByCity} from "../controllers/target.js";
+import { countByCity, createTarget, deleteTarget, getTarget, getTargets, updateTarget,getFeautred} from "../controllers/target.js";
 import Target from "../models/Target.js";
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
@@ -11,11 +11,14 @@ router.post("/", verifyAdmin, createTarget);
 //UPDATE
 router.put("/:id", verifyAdmin,updateTarget)
 //GET
-router.get("/find/:id",verifyAdmin, getTarget)
+router.get("/find/:id", getTarget)
 //DELETE
 router.delete("/:id", verifyAdmin, deleteTarget)
 
 //GET ALL
-router.get("/", verifyAdmin, getTargets)
+router.get("/", getTargets)
+router.get("/getFeautred",getFeautred)
 router.get("/countByCity",countByCity)
+
+
 export default router
