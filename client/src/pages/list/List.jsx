@@ -1,15 +1,20 @@
 import "./list.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigation } from "react-router-dom";
 import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch.js"
+import { SearchContext } from "../../context/SearchContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const List = () => {
+  const navigate = useNavigate()
+
   const location = useLocation();
   const [destination, setDestination] = useState(location.state.destination);
   const [source, setSource] = useState(location.state.source);
@@ -18,9 +23,12 @@ const List = () => {
   const [options, setOptions] = useState(location.state.options);
 
   const {data,loading,error,reFetch} = useFetch(`/targets?source=${source}&destination=${destination}`)
-
+  const {dispatch} = useContext(SearchContext)
   const handleClick = ()=>{
-    reFetch();
+    dispatch({type:"NEW_SEARCH", payload:{source, destination, dates, options}})
+
+    navigate("/hotels", { state: { source,destination, dates, options } });
+    //reFetch();
   }
   const handleChangeOne = (event) => {
     setSource(event.target.value)
