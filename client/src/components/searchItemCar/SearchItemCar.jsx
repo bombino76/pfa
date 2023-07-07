@@ -38,7 +38,7 @@ const SearchItem = ({item}) => {
           <span className="siPrice">{item.price} MAD</span>
           <span className="siTaxOp">Includes taxes and fees</span>
          
-          <Link to={`/hotels/${item._id}`}>
+          <Link to={`/hotel1`}>
           <button className="siCheckButton">Book This Car</button>
           </Link>
         </div>

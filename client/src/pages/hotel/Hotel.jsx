@@ -17,6 +17,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { SearchContext } from "../../context/SearchContext";
+import { SearchContextThree } from "../../context/SearchContextThree.js";
+
 
 const Hotel = () => {
   const [wifi,setWifi] = useState(false)
@@ -36,34 +38,16 @@ const Hotel = () => {
   const {source, destination, dates, options}=  useContext(SearchContext)
   console.log(source, destination, dates, options)
 
-  const handleOpen = (i) => {
-    setSlideNumber(i);
-    setOpen(true);
-  };
 
-  const handleMove = (direction) => {
-    let newSlideNumber;
 
-    if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
-    } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
-    }
+  const {dispatch} = useContext(SearchContextThree)
 
-    setSlideNumber(newSlideNumber)
-  };
 
   const handleClick = ()=>{
     if(user){
-      navigate("/cars",{
-        state:{
-          id:{id},
-          wifi,
-          babySeats,
-          extraBaggage,
-          elseExtra
-        }
-      })
+      dispatch({type:"NEW_SEARCH", payload:{wifi,babySeats,extraBaggage,elseExtra}})
+
+      navigate("/cars", { state: { wifi,babySeats,extraBaggage,elseExtra } });
     }
       else{
         navigate("/login")

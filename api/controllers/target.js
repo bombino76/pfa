@@ -67,6 +67,17 @@ export const getTargets = async (req,res,next)=>{
     }
 }
 
+export const getTargetsOne = async (req,res,next)=>{
+    try{
+        const targets = await Target.findOne(req.query)
+        
+        res.status(200).json(targets)
+
+    }catch(err){
+        next(err);
+    }
+}
+
 export const countByCity = async (req,res,next)=>{
     const cities = req.query.cities.split(",")
 

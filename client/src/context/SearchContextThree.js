@@ -1,14 +1,15 @@
 import { createContext, useReducer } from "react";
 
 const INITIAL_STATE = {
-    name: undefined,
-    seats: undefined,
-    luxe:false
+    wifi: false,
+    babySeats: false,
+    extraBaggage:false,
+    elseExtra: undefined
 
     
 };
 
-export const SearchContext = createContext(INITIAL_STATE)
+export const SearchContextThree = createContext(INITIAL_STATE)
 
 const SearchReducer = (state,action)=>{
     switch(action.type){
@@ -22,16 +23,16 @@ const SearchReducer = (state,action)=>{
     }
 };
 
-export const SearchContextProvider =({children}) =>{
+export const SearchContextThreeProvider =({children}) =>{
     const [state,dispatch] = useReducer(SearchReducer,INITIAL_STATE);
 
     return(
-        <SearchContext.Provider
-        value={{ name : state.name, seats : state.seats, luxe : state.luxe,dispatch}}
+        <SearchContextThree.Provider
+        value={{ wifi : state.wifi, babySeats : state.babySeats, extraBaggage : state.extraBaggage, elseExtra: state.elseExtra, dispatch}}
         >
             {children}
 
-        </SearchContext.Provider>
+        </SearchContextThree.Provider>
 
     )
 }

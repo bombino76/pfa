@@ -4,25 +4,31 @@ import Header from "../../components/header/Header";
 import { useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
 
-
+import { SearchContext } from "../../context/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 import SearchItemCar from "../../components/searchItemCar/SearchItemCar";
 import useFetch from "../../hooks/useFetch.js"
-import { SearchContext } from "../../context/SearchContext";
+import { SearchContextTwo } from "../../context/SearchContextTwo";
+import { SearchContextThree } from "../../context/SearchContextThree";
 
 
 const ListCar = () => {
   const {source, destination, dates, options}=  useContext(SearchContext)
+  const {wifi,babySeats,extraBaggage,elseExtra}=  useContext(SearchContextThree)
+
+  console.log(wifi,babySeats,extraBaggage,elseExtra)
   console.log(source, destination, dates, options)
+  const navigate = useNavigate()
+
   const location = useLocation();
-  const wifi = location.state.wifi
-  const babySeats = location.state.babySeats
-  const extraBaggage = location.state.extraBaggage
-  const elseExtra = location.state.elseExtra
-  console.log(location.state.id.id)
+
+
   const [name, setName] = useState('');
   const [luxe,setLuxe] = useState(false);
   const [seats,setSeats] = useState(5);
+
+  
   
   const handleName = (e)=>{
     setName(e.target.value)
@@ -39,10 +45,13 @@ const ListCar = () => {
   //const [options, setOptions] = useState(location.state.options);
 
   const {data,loading,error,reFetch} = useFetch(`/cars?name=${name}&nbrPlaces=${seats}&luxe=${luxe}`)
-
+  const {dispatch} = useContext(SearchContextTwo)
   const handleClick = ()=>{
-    reFetch();
+    dispatch({type:"NEW_SEARCH", payload:{name,seats,luxe}})
+
+    navigate("/cars", { state: { name,seats,luxe } });
   }
+
   
   return (
     <div>
