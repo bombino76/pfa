@@ -2,10 +2,11 @@ import React from 'react'
 import useFetch from "../../hooks/useFetch"
 import "./searchItemCar.css"
 
-export const Car = ({carName}) => {
+export const Car = ({carName ,chooseMessage}) => {
     const {data,loadingCar, errorCar} = useFetch(`/cars/find/one?name=${carName}`)  
     console.log(carName+" in car")
     console.log(data)
+    chooseMessage(data.price)
   return (
     <div className="searchdata">
     <img

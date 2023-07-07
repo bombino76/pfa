@@ -3,12 +3,12 @@ const {Schema} = mongoose;
 
 const ReservationSchema = new mongoose.Schema({
 
-    qteCar:{
-        type: Number,
+    Car:{
+        type: String,
         required:true
     },
     nbrPassenger:{
-        type: Boolean,
+        type: Number,
         required:true
     },
     total:{

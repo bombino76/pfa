@@ -20,6 +20,7 @@ import { SearchContext } from "../../context/SearchContext";
 import { SearchContextTwo } from "../../context/SearchContextTwo";
 import { SearchContextThree } from "../../context/SearchContextThree";
 import {Car} from "../../components/car/Car"
+import axios from "axios";
 const Hotel1 = () => {
 
 
@@ -40,25 +41,55 @@ const Hotel1 = () => {
   const {data, loading, error} = useFetch(`/targets/one?source=${source}&destination=${destination}`)
   //console.log(data1)
   //const {data, loading, error} = useFetch(`/targets/find/64a201ad413f7980359a6132`)
-  
+  var extraTotal = 0 
+  if(wifi) extraTotal = extraTotal + 30
+  if(babySeats) extraTotal = extraTotal + 40
+  if(extraBaggage) extraTotal = extraTotal + 50
  // console.log(wifi,babySeats,extraBaggage,elseExtra)
  // console.log(typeof source)
  console.log(name,seats,luxe)
 //const car = name
- 
+const [message, setMessage] = useState(0);
+const [clicked, setClicked] = useState(false);
+
+const chooseMessage = (message) => {
+  setMessage(message);
+};
+const nbrPass = options.adult + options.children
+const total = message + extraTotal + data.price
+const post = {
+          Car:name,
+          nbrPassenger:nbrPass,
+          total:total,
+          state:"waiting",
+
+          target:data._id,
+          extra:{
+                  wifi:wifi,
+                  babySeats:babySeats,
+                  extraBaggage:extraBaggage
+                },
+          user: localStorage.getItem("user")
+}
+console.log(post.user)
+const handleBook = async() =>{
+  if(user){
+    try{
+      const res = await axios.post(`/reservations/`,post)
+  
+      setClicked(true)
+    }catch(err){}
+
+  }
+    else{
+      navigate("/login")
+    
+  }
+  
+}
   const startDate = dates[0].startDate.toLocaleDateString('en-GB')
 
 
-  const handleClick = ()=>{
-    if(user){
-
-    }
-      else{
-        navigate("/login")
-      
-    }
-
-  }
 
 
 
@@ -66,8 +97,12 @@ const Hotel1 = () => {
     <div >
       <Navbar />
       <Header type="list" />
+      <h1 className="hotelTitle">Order Summary</h1>
        <div className="container">
-        <Car carName={name}/>
+       
+        <Car carName={name}
+             chooseMessage={chooseMessage} 
+        />
 
         <div className="searchdata">
           <img
@@ -98,26 +133,52 @@ const Hotel1 = () => {
 
 
         </div>
+        
+        
       </div> 
-      <div>
-        Extras
-        <ul>
-          <li>
-            <label >Wifi</label>
-            <input type="checkbox" />
-          </li>
-          <li>
-            <label >Babay Seats</label>
-            <input type="checkbox" />
-          </li>
-          <li>
-            <label >Extra Baggage</label>
-            <input type="checkbox" />
-          </li>
-          
-        </ul>
-      </div>
-    </div> 
+      
+      <div className="searchdata">
+          <img
+            src= "https://cdn01.alison-static.net/careers/career/chauffeur.jpg"
+            alt=""
+            className="siImg"
+          />
+      <div className="siDesc">
+          <h1 className="siTitle">Extras</h1>
+        
+
+          <span className="siSubtitle">
+            Wifi (30 MAD) : {wifi &&  <span>✓</span> }
+          </span>
+          <span className="siSubtitle">
+          BabySeats (40 MAD) : {babySeats && <span>✓</span> }
+          </span>
+          <span className="siSubtitle">
+          ExtraBaggage (50 MAD) : {extraBaggage && <span>✓</span> }
+          </span>
+          <span className="siSubtitle">
+          <span className="siPrice">{extraTotal} MAD</span>
+        
+          </span>
+
+
+        </div> 
+        </div>
+ 
+    </div>
+    
+        <div className="btnDiv">
+          <button className="btn"  disabled={clicked} onClick={handleBook}>Book Now! {message + extraTotal + data.price} MAD</button>
+          <button className="btn green" disabled={clicked} onClick={handleBook}>Pre Reservation! (pay 20%) {(message + extraTotal + data.price)/100*20} MAD</button>
+
+         </div> 
+         <div className="bookDiv">
+         <span className="siTitle" style={{ visibility: clicked ? "visible" : "hidden" }}> Your Reservation is booked , You will recive an email soon</span>
+
+         </div>
+
+
+         
   </div>
 
 

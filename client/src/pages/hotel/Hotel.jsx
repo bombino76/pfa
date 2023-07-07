@@ -97,15 +97,15 @@ const Hotel = () => {
               <div className="checkbox">
               <label>
         <input onChange={handleWifi} type="checkbox" />
-          WIFI
+          WIFI (30 MAD)
       </label>
       <label>
         <input onChange={handleBabySeats} type="checkbox" />
-          Baby Seats
+          Baby Seats (40 MAD)
       </label>
       <label>
         <input onChange={handleExtraBaggage} type="checkbox" />
-          Extra baggage
+          Extra baggage (50 MAD)
       </label>
       <span className="hotelPriceHighlight">
       Something else? please specify it below          
