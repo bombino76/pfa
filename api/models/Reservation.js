@@ -21,23 +21,25 @@ const ReservationSchema = new mongoose.Schema({
         required:true
     },
 
-    target:{
+    source:{
         type: String
       },
+    destination:{
+        type: String
+      },
+
+      
+    firstName:{
+      type: String
+    },
+    email:{
+      type: String
+    },
+    phone:{
+      type: String
+    },
     extra:{
-         wifi :{
-          type:  Boolean
-        },
-         babySeats :{
-            type:  Boolean
-          },
-
-        extraBaggage :{
-            type:  Boolean
-          },
-
-
-
+        type:String
       },
       user:{
         type: String,

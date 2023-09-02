@@ -22,13 +22,15 @@ const CarSchema = new mongoose.Schema({
         type : Number
     },
     rating:{
-        type: Number
+        type: Number,
+        default : 7
     },
     Modele:{
         type: Number
     },
     luxe:{
-        type: Boolean
+        type: Boolean,
+        default: false
     }
 
 },{ timestamps: true });

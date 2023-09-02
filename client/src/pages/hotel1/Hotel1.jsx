@@ -45,10 +45,12 @@ const Hotel1 = () => {
   if(wifi) extraTotal = extraTotal + 30
   if(babySeats) extraTotal = extraTotal + 40
   if(extraBaggage) extraTotal = extraTotal + 50
- // console.log(wifi,babySeats,extraBaggage,elseExtra)
- // console.log(typeof source)
- console.log(name,seats,luxe)
-//const car = name
+  var extraString =""
+  if(wifi) extraString = extraString + "Wifi"
+  if(babySeats) extraString = extraString + " BabySeats "
+  if(extraBaggage) extraString = extraString + " ExtraBaggage "
+  console.log(extraString)
+
 const [message, setMessage] = useState(0);
 const [clicked, setClicked] = useState(false);
 
@@ -57,21 +59,25 @@ const chooseMessage = (message) => {
 };
 const nbrPass = options.adult + options.children
 const total = message + extraTotal + data.price
+
+const userLocal =  JSON.parse(localStorage.getItem("user"))
+
 const post = {
           Car:name,
           nbrPassenger:nbrPass,
           total:total,
           state:"waiting",
+    
+          source:data.source,
+          destination:data.destination,
+          extra:extraString,
+          firstName:userLocal.firstName,
+          email:userLocal.email,
+          phone:userLocal.phone
 
-          target:data._id,
-          extra:{
-                  wifi:wifi,
-                  babySeats:babySeats,
-                  extraBaggage:extraBaggage
-                },
-          user: localStorage.getItem("user")
+          //user: localStorage.getItem("user")
 }
-console.log(post.user)
+
 const handleBook = async() =>{
   if(user){
     try{
